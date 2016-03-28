@@ -1,6 +1,6 @@
 {
   "name": "converge-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A nodeJS library to interact with Converge API",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "private": false,
-  "author": "LPG Labs",
+  "author": "LPG Labs Peter van de Put",
   "keywords": [
     "converge",
     "elavon",

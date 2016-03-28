@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 var ConvergeLib = require('../index');
-var convergeLib = new ConvergeLib('007146','webpage','V6R3FD',true);
+var convergeLib = new ConvergeLib('XXXX','YYYY','ZZZZ',true);
 
 describe('valid scenarios', function() {
     describe('When the card is approved', function() {
