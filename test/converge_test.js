@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 var ConvergeLib = require('../index');
-var convergeLib = new ConvergeLib('XXXX','YYYY','ZZZZ',true);
+var convergeLib = new ConvergeLib('xxxx','yyyy','zzzz',true);
 
 describe('valid scenarios', function() {
     describe('When the card is approved', function() {
@@ -10,11 +10,11 @@ describe('valid scenarios', function() {
         beforeEach(function(done) {
             convergeLib.collectPayment('John','Johnson','info@customer.com','5114630000009791', '05', '17', '123',1.99 ,'1234','this is what i sold')
                 .then(function(response){
+
                     valid = response.txn.ssl_result_message === 'APPROVED';
                     done();
                 })
                 .catch(function(err){
-                   console.error('error',err);
                     done();
                 });
         })
@@ -34,7 +34,6 @@ describe('valid scenarios', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -55,7 +54,6 @@ describe('valid scenarios', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -64,6 +62,50 @@ describe('valid scenarios', function() {
             expect(valid).to.be.true;
         });
     });
+
+
+
+
+    describe('when generating a card token', function() {
+        var valid;
+        this.timeout(10000);
+        beforeEach(function(done) {
+            convergeLib.generateToken('John','Johnson','info@customer.com','5114630000009791', '05', '17', '123')
+                .then(function(response){
+                    valid = (response.txn.ssl_add_token_response === 'Card Added');
+                    done();
+                })
+                .catch(function(err){
+                    done();
+                });
+        })
+
+        it('Then it should pass', function() {
+            expect(valid).to.be.true;
+        });
+    });
+
+
+    describe('When paid via token 8004753777419791', function() {
+        var valid;
+        this.timeout(10000);
+        beforeEach(function(done) {
+            convergeLib.collectPaymentByToken('8004753777419791',1.99 ,'1234','this is what i sold')
+                .then(function(response){
+                    valid = response.txn.ssl_card_number === '51**********9791';
+                    done();
+                })
+                .catch(function(err){
+                    done();
+                });
+        })
+
+        it('Then it should pass', function() {
+            expect(valid).to.be.true;
+        });
+    });
+
+
 });
 
 
@@ -80,7 +122,6 @@ describe('invalid scenarios', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -101,7 +142,6 @@ describe('invalid scenarios', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -127,7 +167,6 @@ describe('Different card types', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -148,7 +187,6 @@ describe('Different card types', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -168,7 +206,6 @@ describe('Different card types', function() {
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
@@ -188,12 +225,10 @@ describe('Verify a credit card', function() {
         beforeEach(function(done) {
             convergeLib.verifyCard('374101000000608', '05', '17', '123')
                 .then(function(response){
-                    console.log('response ',response);
                     valid = response.txn.ssl_card_short_description === 'AMEX';
                     done();
                 })
                 .catch(function(err){
-                    console.error('error',err);
                     done();
                 });
         })
