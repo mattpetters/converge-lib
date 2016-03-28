@@ -1,6 +1,6 @@
 {
   "name": "converge-lib",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A nodeJS library to interact with Converge API",
   "main": "index.js",
   "scripts": {
