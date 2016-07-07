@@ -21,6 +21,7 @@ function Converge(merchantId, userId, pin, testMode) {
 
 
 Converge.prototype.collectPayment = function (firstName, lastName, email, cardNumber, expirationMonth, expirationYear, cvv, amount, invoiceNumber, description) {
+
     var deferred = Q.defer();
     //build txn node
     var xmlTransaction = '';
@@ -52,8 +53,10 @@ Converge.prototype.collectPayment = function (firstName, lastName, email, cardNu
         form: xmlTransaction
     }, function (error, response, body) {
         if (error) {
+
             return deferred.reject(error);
         }
+        //console.log('response',response.body);
         xml2js.parseString(body, function (err, results) {
             if (err) {
                 return deferred.reject(err);
