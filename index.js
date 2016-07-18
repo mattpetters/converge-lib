@@ -68,7 +68,54 @@ Converge.prototype.collectPayment = function (firstName, lastName, email, cardNu
     });
     return deferred.promise;
 };
+Converge.prototype.collectPaymentwithoutCVV = function (firstName, lastName, email, cardNumber, expirationMonth, expirationYear,  amount, invoiceNumber, description) {
 
+    var deferred = Q.defer();
+    //build txn node
+    var xmlTransaction = '';
+    xmlTransaction += 'xmldata=<txn>\n';
+    xmlTransaction += '<ssl_add_token>Y</ssl_add_token>\n'
+    xmlTransaction += '<ssl_merchant_id>' + this.ssl_merchant_id + '</ssl_merchant_id>\n';
+    xmlTransaction += '<ssl_user_id>' + this.ssl_user_id + '</ssl_user_id>\n';
+    xmlTransaction += '<ssl_pin>' + this.ssl_pin + '</ssl_pin>\n';
+    xmlTransaction += '<ssl_test_mode>' + this.ssl_test_mode + '</ssl_test_mode>\n';
+    xmlTransaction += '<ssl_description>' + description + '</ssl_description> \n';
+    xmlTransaction += '<ssl_show_form>false</ssl_show_form>'
+    xmlTransaction += '<ssl_transaction_type>ccsale</ssl_transaction_type>\n';
+    xmlTransaction += '<ssl_card_number>' + cardNumber + '</ssl_card_number>\n';
+    xmlTransaction += '<ssl_exp_date>' + expirationMonth + expirationYear + '</ssl_exp_date>\n';
+    xmlTransaction += '<ssl_amount>' + amount + '</ssl_amount>\n';
+    xmlTransaction += '<ssl_result_format>HTML</ssl_result_format>\n';
+    xmlTransaction += '<ssl_cvv2cvc2_indicator>0</ssl_cvv2cvc2_indicator>\n';
+
+    xmlTransaction += '<ssl_first_name>' + firstName + '</ssl_first_name>\n';
+    xmlTransaction += '<ssl_last_name>' + lastName + '</ssl_last_name>\n';
+    xmlTransaction += '<ssl_email>' + email + '</ssl_email>\n';
+    xmlTransaction += '<ssl_invoice_number>' + invoiceNumber + '</ssl_invoice_number>\n';
+    xmlTransaction += '</txn>\n';
+
+
+    var urlToPost = this.ssl_test_mode ? testURL : productionURL;
+    request.post({
+        url: urlToPost,
+        form: xmlTransaction
+    }, function (error, response, body) {
+        if (error) {
+
+            return deferred.reject(error);
+        }
+        //console.log('response',response.body);
+        xml2js.parseString(body, function (err, results) {
+            if (err) {
+                return deferred.reject(err);
+            }
+            //clean the arrays
+            results = cleanXML(results);
+            return deferred.resolve(results);
+        });
+    });
+    return deferred.promise;
+};
 
 Converge.prototype.generateToken = function (firstName, lastName, email, cardNumber, expirationMonth, expirationYear, cvv) {
     var deferred = Q.defer();

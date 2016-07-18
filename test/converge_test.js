@@ -2,7 +2,8 @@ var expect = require('chai').expect;
 
 var ConvergeLib = require('../index');
 
-var convergeLib = new ConvergeLib('xxxx','yyyy','zzzz',true);
+var convergeLib = new ConvergeLib('007667','webpage','Y8UIN6',true);
+//var convergeLib = new ConvergeLib('xxxx','yyyy','zzzz',true);
 describe('valid scenarios', function() {
     describe('When the card is approved', function() {
         var valid;
@@ -23,6 +24,28 @@ describe('valid scenarios', function() {
             expect(valid).to.be.true;
         });
     });
+
+
+    describe('When collectPaymentwithoutCVV approved', function() {
+        var valid;
+        this.timeout(10000);
+        beforeEach(function(done) {
+            convergeLib.collectPaymentwithoutCVV('John','Johnson','info@customer.com','5114630000009791', '05', '17' ,1.99 ,'1234','this is what i sold')
+                .then(function(response){
+
+                    valid = response.txn.ssl_result_message === 'APPROVED';
+                    done();
+                })
+                .catch(function(err){
+                    done();
+                });
+        })
+
+        it('Then it should pass', function() {
+            expect(valid).to.be.true;
+        });
+    });
+
 
     describe('When the card is indeed a CREDITCARD', function() {
         var valid;
