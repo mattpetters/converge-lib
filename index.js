@@ -87,6 +87,7 @@ Converge.prototype.collectACHPayment = function (firstName, lastName, email, rou
     xmlTransaction += '<ssl_result_format>HTML</ssl_result_format>\n';
     xmlTransaction += '<ssl_aba_number>' + routingNumber + '</ssl_aba_number>\n';
     xmlTransaction += '<ssl_bank_account_number>' + accountNumber + '</ssl_bank_account_number>\n';
+    xmlTransaction += '<ssl_bank_account_type>0</ssl_bank_account_type>\n';
     xmlTransaction += '<ssl_agree>1</ssl_agree>\n';
     xmlTransaction += '<ssl_first_name>' + firstName + '</ssl_first_name>\n';
     xmlTransaction += '<ssl_last_name>' + lastName + '</ssl_last_name>\n';
