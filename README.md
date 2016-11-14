@@ -24,6 +24,17 @@ convergeLib.collectPayment('John','Johnson','info@customer.com','511463000000979
                     
                 });
                 
+//Collect an ACH e-Check
+//Args: firstName, lastName, email, routing, account number, amount, invoice number, description
+convergeLib.collectACHPayment('John','Johnson','info@customer.com','123456789', '1234567890', '10.00', '123','This is an ACH payment for x')
+                .then(function(response){
+                    console.log(response);
+                })
+                .catch(function(err){
+                    console.error('error',err);
+                    
+                });                
+                
 //Verify a card
 convergeLib.verifyCard('374101000000608', '05', '17', '123')
                 .then(function(response){
